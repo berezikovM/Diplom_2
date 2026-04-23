@@ -3,6 +3,7 @@ package tests;
 import client.AuthClient;
 import client.OrderClient;
 import client.UserClient;
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import model.request.CreateOrderRequest;
@@ -48,6 +49,7 @@ public class OrderTest {
                 .build();
 
         ValidatableResponse reg = authClient.register(user);
+
         accessToken = reg.extract().path("accessToken");
     }
 
@@ -61,7 +63,8 @@ public class OrderTest {
     // ====================== ПОЗИТИВНЫЕ СЦЕНАРИИ ======================
 
     @Test
-    @DisplayName("Создать заказ с авторизацией → success = true")
+    @DisplayName("Успешное создать заказа с авторизацией")
+    @Description("Проверка, создания заказа с авторизацией и ожидаем → success = true")
     public void createOrderWithAuthSuccessTest() {
         CreateOrderRequest request = CreateOrderRequest.builder()
                 .ingredients(VALID_INGREDIENTS).build();
@@ -73,7 +76,8 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Создать заказ с авторизацией → возвращается номер заказа")
+    @DisplayName("Успешное возвращение номера заказа при создании заказа с авторизацией")
+    @Description("Проверка, создания заказа с авторизацией и ожидаем → возвращается номер заказа")
     public void createOrderReturnsOrderNumberTest() {
         CreateOrderRequest request = CreateOrderRequest.builder()
                 .ingredients(VALID_INGREDIENTS).build();
@@ -88,7 +92,8 @@ public class OrderTest {
     // ====================== СЦЕНАРИЙ БЕЗ АВТОРИЗАЦИИ ======================
 
     @Test
-    @DisplayName("Создать заказ без авторизации → success = true")
+    @DisplayName("Успешное создание заказа без авторизации")
+    @Description("Проверка, создания заказа без авторизациии и ожидаем → success = true")
     public void createOrderWithoutAuthorizationSuccessTest() {
         CreateOrderRequest request = CreateOrderRequest.builder()
                 .ingredients(VALID_INGREDIENTS).build();
@@ -100,7 +105,8 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Создать заказ без авторизации → возвращается номер заказа")
+    @DisplayName("Успешное возвращение номера заказа при создании заказа без авторизации")
+    @Description("Проверка, создания заказа без авторизации и и ожидаем → возвращается номер заказа")
     public void createOrderWithoutAuthorizationReturnsNumberTest() {
         CreateOrderRequest request = CreateOrderRequest.builder()
                 .ingredients(VALID_INGREDIENTS).build();
@@ -115,7 +121,8 @@ public class OrderTest {
     // ====================== НЕГАТИВНЫЕ СЦЕНАРИИ ======================
 
     @Test
-    @DisplayName("Создать заказ без ингредиентов → 400 + Ingredient ids must be provided")
+    @DisplayName("Создать заказ без ингредиентов")
+    @Description("Проверка, создания заказ без ингредиентов и ожидаем → 400 + Ingredient ids must be provided")
     public void createOrderWithoutIngredientsReturns400Test() {
         CreateOrderRequest request = CreateOrderRequest.builder()
                 .ingredients(Collections.emptyList()).build();
@@ -128,7 +135,8 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Создать заказ с неверным хешем ингредиента → 500")
+    @DisplayName("Создать заказ с неверным хешем ингредиента")
+    @Description("Проверка, создания заказ без ингредиентов и ожидаем → 500")
     public void createOrderWithInvalidHashReturns500Test() {
         CreateOrderRequest request = CreateOrderRequest.builder()
                 .ingredients(Collections.singletonList("invalid_hash_123456")).build();
